@@ -5,7 +5,8 @@ import {
   Grid,
   Typography,
   Paper,
-  IconButton
+  IconButton,
+  Stack
 } from "@mui/material";
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
 
@@ -19,35 +20,30 @@ function ProductForm({ addProduct }) {
     relatedParties: [{ name: "", role: "" }]
   });
 
-  // Handle simple text field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle dynamic array fields
   const handleArrayChange = (field, index, subField, value) => {
     const updatedArray = [...formData[field]];
     updatedArray[index][subField] = value;
     setFormData({ ...formData, [field]: updatedArray });
   };
 
-  // Add new entry
   const handleAddField = (field, newObj) => {
     setFormData({ ...formData, [field]: [...formData[field], newObj] });
   };
 
-  // Remove entry
   const handleRemoveField = (field, index) => {
     const updatedArray = [...formData[field]];
     updatedArray.splice(index, 1);
     setFormData({ ...formData, [field]: updatedArray });
   };
 
-  // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
-    addProduct(formData); // Calls backend via App.js
+    addProduct(formData);
     setFormData({
       name: "",
       description: "",
@@ -59,8 +55,8 @@ function ProductForm({ addProduct }) {
   };
 
   return (
-    <Paper style={{ padding: "20px", marginBottom: "20px" }}>
-      <Typography variant="h6" gutterBottom>
+    <Paper sx={{ padding: 4, mb: 3, boxShadow: 3 ,backgroundColor: "#EDE9FE"}}>
+      <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1976d2" }}>
         Add New Product
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -102,17 +98,13 @@ function ProductForm({ addProduct }) {
             />
           </Grid>
 
-          {/* Characteristics Section */}
+          {/* Characteristics */}
           <Grid item xs={12}>
-            <Typography variant="subtitle1">Characteristics</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
+              Characteristics
+            </Typography>
             {formData.characteristics.map((c, index) => (
-              <Grid
-                container
-                spacing={1}
-                key={index}
-                alignItems="center"
-                style={{ marginBottom: "10px" }}
-              >
+              <Grid container spacing={1} key={index} alignItems="center" sx={{ mb: 1 }}>
                 <Grid item xs={4}>
                   <TextField
                     fullWidth
@@ -148,36 +140,30 @@ function ProductForm({ addProduct }) {
                     onClick={() => handleRemoveField("characteristics", index)}
                     disabled={formData.characteristics.length === 1}
                   >
-                    <RemoveCircle />
+                    <RemoveCircle color="error" />
                   </IconButton>
                 </Grid>
               </Grid>
             ))}
             <Button
+              variant="outlined"
               startIcon={<AddCircle />}
+              sx={{ mt: 1, mb: 2 }}
               onClick={() =>
-                handleAddField("characteristics", {
-                  name: "",
-                  valueType: "String",
-                  value: ""
-                })
+                handleAddField("characteristics", { name: "", valueType: "String", value: "" })
               }
             >
               Add Characteristic
             </Button>
           </Grid>
 
-          {/* Related Parties Section */}
+          {/* Related Parties */}
           <Grid item xs={12}>
-            <Typography variant="subtitle1">Related Parties</Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
+              Related Parties
+            </Typography>
             {formData.relatedParties.map((r, index) => (
-              <Grid
-                container
-                spacing={1}
-                key={index}
-                alignItems="center"
-                style={{ marginBottom: "10px" }}
-              >
+              <Grid container spacing={1} key={index} alignItems="center" sx={{ mb: 1 }}>
                 <Grid item xs={5}>
                   <TextField
                     fullWidth
@@ -203,16 +189,16 @@ function ProductForm({ addProduct }) {
                     onClick={() => handleRemoveField("relatedParties", index)}
                     disabled={formData.relatedParties.length === 1}
                   >
-                    <RemoveCircle />
+                    <RemoveCircle color="error" />
                   </IconButton>
                 </Grid>
               </Grid>
             ))}
             <Button
+              variant="outlined"
               startIcon={<AddCircle />}
-              onClick={() =>
-                handleAddField("relatedParties", { name: "", role: "" })
-              }
+              sx={{ mt: 1, mb: 2 }}
+              onClick={() => handleAddField("relatedParties", { name: "", role: "" })}
             >
               Add Related Party
             </Button>
@@ -220,9 +206,11 @@ function ProductForm({ addProduct }) {
 
           {/* Submit */}
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              Save Product
-            </Button>
+            <Stack direction="row" justifyContent="center">
+              <Button type="submit" variant="contained" color="primary" sx={{ px: 6 }}>
+                Save Product
+              </Button>
+            </Stack>
           </Grid>
         </Grid>
       </form>
