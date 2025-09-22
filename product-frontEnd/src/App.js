@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container, Typography, Box, Button, Stack, Paper } from "@mui/material";
 import ProductForm from "./components/ProductForm";
 import ProductTable from "./components/ProductTable";
 import AdvancedSearchBar from "./components/AdvancedSearchBar";
@@ -34,7 +35,7 @@ function App() {
 
   useEffect(() => {
     loadProducts();
-  });
+  }, []); // fixed infinite loop issue by passing empty dependency array
 
   const handleAddProduct = async (productData) => {
     try {
@@ -68,22 +69,33 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Product Management</h2>
-      <ProductForm addProduct={handleAddProduct} />
-      <AdvancedSearchBar onSearch={handleSearch} />
-      <ProductTable products={products} onDelete={handleDelete} />
+    <Container maxWidth="lg" sx={{ paddingY: 4 }}>
+      <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+        Product Management
+      </Typography>
 
-      <div style={{ marginTop: "20px", display: "flex", gap: "10px", alignItems: "center" }}>
-        <button onClick={handlePrevPage} disabled={page === 0}>
+      <Paper sx={{ padding: 3, marginBottom: 3, boxShadow: 3 }}>
+        <ProductForm addProduct={handleAddProduct} />
+      </Paper>
+
+      <Paper sx={{ padding: 3, marginBottom: 3, boxShadow: 3 }}>
+        <AdvancedSearchBar onSearch={handleSearch} />
+      </Paper>
+
+      <Paper sx={{ padding: 3, marginBottom: 3, boxShadow: 3 }}>
+        <ProductTable products={products} onDelete={handleDelete} />
+      </Paper>
+
+      <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" marginTop={2}>
+        <Button variant="contained" color="primary" onClick={handlePrevPage} disabled={page === 0}>
           Previous
-        </button>
-        <span>Page {page + 1}</span>
-        <button onClick={handleNextPage} disabled={products.length < size}>
+        </Button>
+        <Typography variant="subtitle1">Page {page + 1}</Typography>
+        <Button variant="contained" color="primary" onClick={handleNextPage} disabled={products.length < size}>
           Next
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Stack>
+    </Container>
   );
 }
 
