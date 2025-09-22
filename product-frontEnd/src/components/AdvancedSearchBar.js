@@ -64,7 +64,7 @@ function AdvancedSearchBar({ onSearch }) {
   };
 
   return (
-    <Paper style={{ padding: 20, marginBottom: 20, position: "relative" }}>
+    <Paper style={{ padding: 20, marginBottom: 20, position: "relative" ,backgroundColor:"#D6D3D1"}}>
       <Grid container spacing={1} alignItems="center">
         {/* Quick Search */}
         <Grid item xs={12} sm={6}>
