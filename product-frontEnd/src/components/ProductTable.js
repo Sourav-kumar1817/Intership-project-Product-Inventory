@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const ProductTable = ({ products, onDelete }) => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{backgroundColor:"#D6D3D1"}}>
       <Table>
         <TableHead>
           <TableRow>
