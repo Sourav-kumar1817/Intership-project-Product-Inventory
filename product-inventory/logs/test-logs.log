@@ -1,0 +1,15 @@
+2025-09-24 16:31:50.837 [main] INFO  c.comviva.service.ProductServiceImpl - ***************Executing dynamicSearch with page=0 and size=10******************
+2025-09-24 16:31:50.840 [main] DEBUG c.comviva.service.ProductServiceImpl - ***********Query parameters: {name=[Test]}***********
+2025-09-24 16:31:50.851 [main] INFO  c.comviva.service.ProductServiceImpl - dynamicSearch returned 1 products
+2025-09-24 16:31:50.892 [main] INFO  c.comviva.service.ProductServiceImpl - Saving product: Laptop
+2025-09-24 16:31:50.892 [main] INFO  c.comviva.service.ProductServiceImpl - Product saved with id=Laptop
+2025-09-24 16:31:50.906 [main] INFO  c.comviva.service.ProductServiceImpl - Updating product with id=1
+2025-09-24 16:31:50.907 [main] INFO  c.comviva.service.ProductServiceImpl - Product with id=1 updated successfully
+2025-09-24 16:31:50.917 [main] INFO  c.comviva.service.ProductServiceImpl - Deleting product with id=1
+2025-09-24 16:31:50.917 [main] WARN  c.comviva.service.ProductServiceImpl - Product with id=1 not found for deletion
+2025-09-24 16:31:50.923 [main] INFO  c.comviva.service.ProductServiceImpl - Updating product with id=1
+2025-09-24 16:31:50.923 [main] WARN  c.comviva.service.ProductServiceImpl - Product with id=1 not found
+2025-09-24 16:31:50.930 [main] INFO  c.comviva.service.ProductServiceImpl - Deleting product with id=1
+2025-09-24 16:31:50.931 [main] INFO  c.comviva.service.ProductServiceImpl - Product with id=1 deleted successfully
+2025-09-24 16:31:50.938 [main] INFO  c.comviva.service.ProductServiceImpl - ***************Executing dynamicSearch with page=0 and size=10******************
+2025-09-24 16:31:50.938 [main] DEBUG c.comviva.service.ProductServiceImpl - ***********Query parameters: {invalidKey=[value]}***********

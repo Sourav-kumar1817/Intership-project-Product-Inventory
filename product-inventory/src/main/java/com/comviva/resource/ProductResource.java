@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,23 +20,35 @@ import java.util.stream.Collectors;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProductResource {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductResource.class);
+
+    @Inject
+    ProductMapper productMapper;
+
     @Inject
     ProductService productService;
 
     private final ObjectMapper mapper = new ObjectMapper();
+
     @GET
     public Response getProducts(@Context UriInfo uriInfo,
                                 @QueryParam("page") @DefaultValue("0") int page,
                                 @QueryParam("size") @DefaultValue("20") int size) {
 
+        log.info("GET request works fine and Fetching the data");
         MultivaluedMap<String, String> allParams = uriInfo.getQueryParameters();
+        log.debug("Query parameters: {}", allParams);
+
         List<Product> products = productService.dynamicSearch(allParams, page, size);
+
         String fieldsParam = allParams.getFirst("fields");
         if (fieldsParam != null && !fieldsParam.isBlank()) {
+            log.info("Filtering response for the Products");
             List<String> requestedFields = Arrays.stream(fieldsParam.split(","))
                     .map(String::trim)
                     .filter(s -> !s.isEmpty())
                     .collect(Collectors.toList());
+
             List<Map<String, Object>> out = products.stream().map(prod -> {
                 Map<String, Object> fullMap = mapper.convertValue(prod, new TypeReference<Map<String, Object>>() {});
                 Map<String, Object> filtered = new LinkedHashMap<>();
@@ -51,35 +65,65 @@ public class ProductResource {
                 return filtered;
             }).collect(Collectors.toList());
 
+            log.info("Returning {} filtered products", out.size());
             return Response.ok(out).build();
         }
+
         List<ProductDTO> dtos = products.stream()
-                .map(ProductMapper::toDTO)
+                .map(productMapper::toDTO)
                 .collect(Collectors.toList());
 
+        log.info("Returning {} products", dtos.size());
         return Response.ok(dtos).build();
     }
+
     @POST
     public Response createProduct(Product product) {
+        log.info("POST /products called to create product: {}", product.getName());
         try {
             Product saved = productService.saveProduct(product);
+            log.info("Product created with name={}", saved.getName());
             return Response.status(Response.Status.CREATED).entity(saved).build();
         } catch (Exception e) {
+            log.error("Error creating product: {}", product.getName(), e);
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
+
+    @PATCH
+    @Path("/{id}")
+    public Response updateProduct(@PathParam("id") Long id, Map<String, Object> updates) {
+        log.info("PATCH /products/{} called with updates={}", id, updates);
+        try {
+            ProductDTO updated = productService.updateProduct(id, updates);
+            if (updated != null) {
+                log.info("Product with id={} updated successfully", id);
+                return Response.ok(updated).build();
+            } else {
+                log.warn("Product with id={} not found", id);
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("Product with id " + id + " not found")
+                        .build();
+            }
+        } catch (Exception e) {
+            log.error("Error updating product with id={}", id, e);
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
     @DELETE
     @Path("/{id}")
     public Response deleteProduct(@PathParam("id") Long id) {
+        log.info("DELETE /products/{} called", id);
         boolean deleted = productService.deleteProduct(id);
         if (deleted) {
+            log.info("Product with id={} deleted successfully", id);
             return Response.noContent().build();
         } else {
+            log.warn("Product with id={} not found for deletion", id);
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("Product with id " + id + " not found")
                     .build();
         }
     }
-
-
 }
