@@ -1,5 +1,6 @@
 package com.comviva.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
@@ -13,6 +14,7 @@ public class ProductSpecification extends PanacheEntity {
     private String specType;
 
     @OneToOne(mappedBy = "productSpecification")
+    @JsonManagedReference
     private Product product;
 
     // Getters and Setters

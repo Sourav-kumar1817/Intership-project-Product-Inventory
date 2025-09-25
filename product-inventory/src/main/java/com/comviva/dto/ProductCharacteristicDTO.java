@@ -1,9 +1,13 @@
 package com.comviva.dto;
 
-public class ProductCharacteristicDTO {
+import jakarta.validation.constraints.NotBlank;
 
+public class ProductCharacteristicDTO {
+    @NotBlank(message = "Characteristic required")
     private String name;
+    @NotBlank(message = "Type of value")
     private String valueType;
+    @NotBlank(message = "characteristic value must")
     private String value;
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

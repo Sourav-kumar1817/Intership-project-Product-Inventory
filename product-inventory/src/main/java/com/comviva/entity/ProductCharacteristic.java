@@ -1,5 +1,6 @@
 package com.comviva.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
@@ -11,6 +12,7 @@ public class ProductCharacteristic extends PanacheEntity {
     private String value;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "product_id")
     private Product product;
 

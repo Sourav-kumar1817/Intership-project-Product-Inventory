@@ -1,11 +1,15 @@
 package com.comviva.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class RelatedPartyDTO {
 
     private Long id;
     private String externalId;
     private String href;
+    @NotBlank(message = "name must")
     private String name;
+    @NotBlank(message = "role should be described")
     private String role;
     private String referredType;
 

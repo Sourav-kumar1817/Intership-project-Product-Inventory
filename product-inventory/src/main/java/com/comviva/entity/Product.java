@@ -1,5 +1,7 @@
 package com.comviva.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -9,23 +11,30 @@ import java.util.List;
 public class Product extends PanacheEntity {
 
     private String description;
+   @JsonIgnore
     private boolean isBundle;
+   @JsonIgnore
     private boolean isCustomerVisible;
     private String name;
+    @JsonIgnore
     private String productSerialNumber;
     private LocalDateTime startDate;
     private String status;
 
     @OneToMany(mappedBy="product", cascade=CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ProductCharacteristic> characteristics;
 
     @OneToMany(mappedBy="product", cascade=CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ProductOrderItem> orderItems;
 
     @OneToMany(mappedBy="product", cascade=CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<RelatedParty> relatedParties;
 
     @OneToMany(mappedBy="product", cascade=CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<RealizingService> realizingServices;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -35,6 +44,7 @@ public class Product extends PanacheEntity {
     private ProductSpecification productSpecification;
 
     // Getters and Setters
+
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 

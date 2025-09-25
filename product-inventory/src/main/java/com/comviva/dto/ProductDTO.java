@@ -1,5 +1,9 @@
 package com.comviva.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,16 +13,27 @@ public class ProductDTO {
     private String description;
     private boolean isBundle;
     private boolean isCustomerVisible;
+   @NotBlank(message = "Product name is required")
     private String name;
+   @NotBlank(message = "Serial number is must")
     private String productSerialNumber;
+   @FutureOrPresent(message = "date should be present or any in future")
     private LocalDateTime startDate;
+    @NotBlank(message = "Required like ACTIVE or INACTIVE")
     private String status;
+    @Valid
     private List<ProductCharacteristicDTO> characteristics;
+    @Valid
     private List<ProductOrderItemDTO> orderItems;
+    @Valid
     private List<RelatedPartyDTO> relatedParties;
+    @Valid
     private List<RealizingServiceDTO> realizingServices;
+    @Valid
     private ProductOfferingDTO productOffering;
+    @Valid
     private ProductSpecificationDTO productSpecification;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

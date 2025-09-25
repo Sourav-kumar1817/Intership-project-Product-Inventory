@@ -7,6 +7,7 @@ import com.comviva.service.mapper.ProductMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.slf4j.Logger;
@@ -78,17 +79,22 @@ public class ProductResource {
     }
 
     @POST
-    public Response createProduct(Product product) {
-        log.info("POST /products called to create product: {}", product.getName());
+    public Response createProduct(@Valid ProductDTO productDTO) {
+        log.info("POST /products called to create product: {}", productDTO.getName());
+
         try {
+            Product product = productMapper.toEntity(productDTO);
             Product saved = productService.saveProduct(product);
+            ProductDTO responseDTO = productMapper.toDTO(saved);
             log.info("Product created with name={}", saved.getName());
-            return Response.status(Response.Status.CREATED).entity(saved).build();
+            return Response.status(Response.Status.CREATED).entity(responseDTO).build();
+
         } catch (Exception e) {
-            log.error("Error creating product: {}", product.getName(), e);
+            log.error("Error creating product: {}", productDTO.getName(), e);
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
+
 
     @PATCH
     @Path("/{id}")
