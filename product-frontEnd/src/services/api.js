@@ -8,7 +8,6 @@ export const fetchProducts = async (params = {}) => {
   const response = await axios.get(`${API_URL}?${query}`);
   return response.data;
 };
-
 // Create a new product
 export const createProduct = async (product) => {
   const response = await axios.post(API_URL, product);

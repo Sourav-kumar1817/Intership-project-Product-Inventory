@@ -249,4 +249,3 @@ class ProductServiceImplTest {
         verify(typedQuery, times(1)).getResultList();
     }
 }
-//

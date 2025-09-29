@@ -77,26 +77,21 @@ public class ProductServiceImpl implements ProductService {
                 throw new InvalidSearchKeyException("Invalid search key or path " + rawKey);
             }
         }
-
         if (!predicates.isEmpty()) {
             cq.where(cb.and(predicates.toArray(new Predicate[0])));
         }
-
         TypedQuery<Product> typedQuery = em.createQuery(cq);
         if (page >= 0 && size > 0) {
             typedQuery.setFirstResult(page * size);
             typedQuery.setMaxResults(size);
         }
-
         List<Product> results = typedQuery.getResultList();
         log.info("dynamicSearch returned {} products", results.size());
         return results;
     }
-
     private boolean isAllowed(String rawKey) {
         return ALLOWED_SEARCH_KEYS.contains(rawKey);
     }
-
     private Path<?> resolvePath(Root<Product> root, String dotted, Map<String, From<?, ?>> joins) {
         String[] parts = dotted.split("\\.");
         if (parts.length == 1) return root.get(parts[0]);
@@ -119,18 +114,15 @@ public class ProductServiceImpl implements ProductService {
 @Transactional
 public Product saveProduct(Product product) {
     log.info("Saving product: {}", product.getName());
-
     // Validate required fields
     if (product.getName() == null || product.getName().isBlank()) {
         throw new InvalidProductException("Product name cannot be blank");
     }
-
     // Initialize lists if null to avoid runtime errors
     if (product.getCharacteristics() == null) product.setCharacteristics(new ArrayList<>());
     if (product.getOrderItems() == null) product.setOrderItems(new ArrayList<>());
     if (product.getRelatedParties() == null) product.setRelatedParties(new ArrayList<>());
     if (product.getRealizingServices() == null) product.setRealizingServices(new ArrayList<>());
-
     // Set parent reference for child entities
     product.getCharacteristics().forEach(c -> c.setProduct(product));
     product.getOrderItems().forEach(o -> o.setProduct(product));
@@ -143,8 +135,6 @@ public Product saveProduct(Product product) {
 
     return product;
 }
-
-
     @PATCH
     @Transactional
     public ProductDTO updateProduct(Long id, Map<String, Object> updates) {
@@ -153,14 +143,12 @@ public Product saveProduct(Product product) {
         if (product == null) {
             throw new ProductNotFoundException("Product not found with id = " + id);
         }
-
         try {
             // Load collections
             if (product.getCharacteristics() != null) product.getCharacteristics().size();
             if (product.getRelatedParties() != null) product.getRelatedParties().size();
             if (product.getOrderItems() != null) product.getOrderItems().size();
             if (product.getRealizingServices() != null) product.getRealizingServices().size();
-
             // Update simple fields
             if (updates.containsKey("name")) {
                 String name = (String) updates.get("name");
