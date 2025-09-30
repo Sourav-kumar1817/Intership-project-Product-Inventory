@@ -121,7 +121,6 @@ function ProductForm({ initialData = null, onSubmit }) {
               required
             />
           </Grid>
-
           {/* Description */}
           <Grid item xs={12}>
             <TextField
@@ -134,7 +133,6 @@ function ProductForm({ initialData = null, onSubmit }) {
               onChange={handleChange}
             />
           </Grid>
-
           {/* Characteristics */}
           <Grid item xs={12}>
             <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>Characteristics</Typography>
